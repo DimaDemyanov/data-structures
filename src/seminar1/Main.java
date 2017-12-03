@@ -25,7 +25,7 @@ public class Main {
 
         System.out.println();
         System.out.println("LinkedQueue");
-        IQueue<Integer> queue = new LinkedQueue<>();
+        IQueue<Integer> queue = new LinkedQueue<Integer>();
         for (int i = 0; i < 20; i++) {
             queue.enqueue(i);
         }

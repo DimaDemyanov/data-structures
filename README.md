@@ -1,1 +1,2 @@
-# data-structures
+# A-DS
+Seminar problems (A &amp; SD)

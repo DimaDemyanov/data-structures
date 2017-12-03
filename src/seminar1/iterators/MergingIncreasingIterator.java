@@ -1,5 +1,7 @@
 package seminar1.iterators;
 
+// DONE !! NOT CHECKED!!!
+
 import java.util.Iterator;
 
 /**
@@ -15,22 +17,53 @@ public class MergingIncreasingIterator implements Iterator<Integer> {
 
     private IncreasingIterator first;
     private IncreasingIterator second;
+    private Integer firstNext;
+    private Integer secondNext;
 
     public MergingIncreasingIterator(IncreasingIterator first, IncreasingIterator second) {
         this.first = first;
         this.second = second;
         /* TODO: implement it */
+        if(first.hasNext())
+            firstNext = first.next();
+        if(second.hasNext())
+            secondNext = second.next();
+
     }
 
     @Override
     public boolean hasNext() {
-        /* TODO: implement it */
+        if(firstNext != null || secondNext != null)
+            return true;
         return false;
     }
 
     @Override
     public Integer next() {
-        /* TODO: implement it */
-        return null;
+
+        Integer next = null;
+        if(firstNext != null && secondNext != null){
+            if(firstNext < secondNext){
+                next = firstNext;
+                if(first.hasNext())
+                    firstNext = first.next();
+            }else{
+                next = secondNext;
+                if(second.hasNext())
+                    secondNext = second.next();
+            }
+            return next;
+        }
+        if(firstNext != null){
+            next = firstNext;
+            if(first.hasNext())
+                firstNext = first.next();
+        }
+        if(secondNext != null) {
+            next = secondNext;
+            if (second.hasNext())
+                secondNext = second.next();
+        }
+        return next;
     }
 }
