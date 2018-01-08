@@ -3,6 +3,7 @@ package seminar1.collections;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayPriorityQueue<Key extends Comparable<Key>> implements IPriorityQueue<Key> {
 
@@ -29,6 +30,7 @@ public class ArrayPriorityQueue<Key extends Comparable<Key>> implements IPriorit
     @Override
     public void add(Key key) {
         /* TODO: implement it — O(log n) */
+        if (key == null) throw new NullPointerException();
         size++;
         if (size > capacity) grow();
         elementData[size - 1] = key;
@@ -41,6 +43,8 @@ public class ArrayPriorityQueue<Key extends Comparable<Key>> implements IPriorit
          * TODO: implement it — O(1)
          * Посмотреть на минимальный элемент
          */
+        if (isEmpty())
+            throw new NoSuchElementException();
         return elementData[0];
     }
 
@@ -51,6 +55,8 @@ public class ArrayPriorityQueue<Key extends Comparable<Key>> implements IPriorit
          * Достать минимальный элемент
          *  и перестроить кучу
          */
+        if (isEmpty())
+            throw new NoSuchElementException();
         swap(0, size - 1);
         Key ret = elementData[size - 1];
         size--;

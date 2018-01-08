@@ -1,6 +1,7 @@
 package seminar1.collections;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class CyclicArrayDeque<Item> implements IDeque<Item> {
 
@@ -15,27 +16,25 @@ public class CyclicArrayDeque<Item> implements IDeque<Item> {
         capacity = DEFAULT_CAPACITY;
         size = 0;
         begin = 0;
-        end = -1;
+        end = DEFAULT_CAPACITY-1;
     }
 
     @Override
     public void pushFront(Item item) {
-        if(item != null) {
-            begin = (begin - 1 + capacity) % capacity;
-            size++;
-            grow();
-            elementData[begin] = item;
-        }
+        if(item == null) throw new NullPointerException();
+        begin = (begin - 1 + capacity) % capacity;
+        size++;
+        grow();
+        elementData[begin] = item;
     }
 
     @Override
     public void pushBack(Item item) {
-        if(item != null) {
-            end = (end + 1) % capacity;
-            size++;
-            grow();
-            elementData[end] = item;
-        }
+        if(item == null) throw new NullPointerException();
+        end = (end + 1) % capacity;
+        size++;
+        grow();
+        elementData[end] = item;
     }
 
     @Override
@@ -46,6 +45,8 @@ public class CyclicArrayDeque<Item> implements IDeque<Item> {
             size--;
             begin = (begin + 1) % capacity;
             shrink();
+        } else {
+            throw new NoSuchElementException();
         }
 
         return res;
@@ -54,11 +55,14 @@ public class CyclicArrayDeque<Item> implements IDeque<Item> {
     @Override
     public Item popBack() {
         Item res = null;
+        if(size == 0) throw new NoSuchElementException();
         if(elementData[end] != null){
             res = elementData[end];
             size--;
             end = (end - 1 + capacity) % capacity;
             shrink();
+        } else {
+            throw new NoSuchElementException();
         }
 
         return res;
@@ -124,7 +128,6 @@ public class CyclicArrayDeque<Item> implements IDeque<Item> {
     @Override
     public Iterator<Item> iterator() {
         Iterator<Item> iter = new Iterator<Item>() {
-            // Item [] elements = elementData;
             int cap = capacity;
             int s = size;
             int curr = begin;
@@ -139,10 +142,11 @@ public class CyclicArrayDeque<Item> implements IDeque<Item> {
             public Item next() {
                 Item res = null;
                 if(hasNext()){
-                    if(curr == end - 1 && s != 0)
+                    if(curr == end + 1 && s != 0)
                         hasNext = false;
-                    curr = (curr + 1 + cap) % cap;
+                    size--;
                     res = elementData[curr];
+                    curr = (curr + 1 + cap) % cap;
                 }
                 return res;
             }

@@ -1,6 +1,7 @@
 package seminar1.collections;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedDeque<Item> implements IDeque<Item> {
 
@@ -12,6 +13,7 @@ public class LinkedDeque<Item> implements IDeque<Item> {
     @Override
     public void pushFront(Item item) {
         /* TODO: implement it */
+        if(item == null) throw new NullPointerException();
         Node<Item> newNode = new Node<Item>(item, tail, null);
         if(tail != null)
             tail.prev = newNode;
@@ -24,6 +26,7 @@ public class LinkedDeque<Item> implements IDeque<Item> {
     @Override
     public void pushBack(Item item) {
         /* TODO: implement it */
+        if(item == null) throw new NullPointerException();
         Node<Item> newNode = new Node<>(item, null, head);
         if( head != null)
             head.next = newNode;
@@ -36,7 +39,9 @@ public class LinkedDeque<Item> implements IDeque<Item> {
     @Override
     public Item popFront() {
         /* TODO: implement it */
-        Item ret = tail.item;
+        Item ret = null;
+        if (isEmpty()) throw new NoSuchElementException();
+        ret = tail.item;
         tail = tail.next;
         if (tail != null)
             tail.prev = null;
@@ -47,7 +52,9 @@ public class LinkedDeque<Item> implements IDeque<Item> {
     @Override
     public Item popBack() {
         /* TODO: implement it */
-        Item ret = head.item;
+        Item ret = null;
+        if (isEmpty()) throw new NoSuchElementException();
+        ret = head.item;
         head = head.prev;
         if (head != null)
             head.next = null;
@@ -58,7 +65,7 @@ public class LinkedDeque<Item> implements IDeque<Item> {
     @Override
     public boolean isEmpty() {
         /* TODO: implement it */
-        if (size > 0) return true;
+        if (size == 0) return true;
         return false;
     }
 

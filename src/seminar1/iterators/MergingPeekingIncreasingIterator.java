@@ -3,7 +3,6 @@ package seminar1.iterators;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import olymp.Heap;
 import seminar1.collections.ArrayPriorityQueue;
 
 /**
@@ -23,6 +22,7 @@ public class MergingPeekingIncreasingIterator implements Iterator<Integer> {
     private ArrayPriorityQueue<HeapElement> queue;
 
     public MergingPeekingIncreasingIterator(IPeekingIterator... peekingIterator) {
+        if (peekingIterator == null) throw new NullPointerException();
         queue = new ArrayPriorityQueue<>();
         for (int i = 0; i < peekingIterator.length; i++) {
             if (peekingIterator[i].hasNext())
@@ -64,11 +64,11 @@ public class MergingPeekingIncreasingIterator implements Iterator<Integer> {
     }
 
     public static void main(String[] args) {
-        //IPeekingIterator iter = ;
-        MergingPeekingIncreasingIterator it =
-                new MergingPeekingIncreasingIterator(new PeekingIncreasingIterator(1, 10, 5), new PeekingIncreasingIterator(1, 10, 5), new PeekingIncreasingIterator(1, 10, 5));
-        while (it.hasNext()){
-            System.out.println(it.next());
-        }
+//        //IPeekingIterator iter = ;
+//        MergingPeekingIncreasingIterator it =
+//                new MergingPeekingIncreasingIterator(new PeekingIncreasingIterator(1, 10, 5), new PeekingIncreasingIterator(1, 10, 5), new PeekingIncreasingIterator(1, 10, 5));
+//        while (it.hasNext()){
+//            System.out.println(it.next());
+//        }
     }
 }
