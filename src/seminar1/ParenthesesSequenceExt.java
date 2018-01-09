@@ -4,10 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import seminar1.collections.ArrayStack;
-
-// DONE!!!
-
 /**
  * 1. пустая строка — правильная скобочная последовательность;
  * 2. правильная скобочная последовательность,
@@ -29,17 +25,8 @@ public class ParenthesesSequenceExt {
 
     // sequence = "()()" | "(({}[]))[[[" | "{}" | ...
     private static boolean isBalanced(String sequence) {
-        ArrayStack<Character> stack = new ArrayStack();
-        for (int i = 0; i < sequence.length(); i++) {
-            char nextEl = sequence.charAt(i);
-            if(nextEl == '(' || nextEl == '{' || nextEl == '[')
-                stack.push(nextEl);
-            if(nextEl == ']' && !(stack.pop() == '[')) return false;
-            if(nextEl == ')' && !(stack.pop() == '(')) return false;
-            if(nextEl == '}' && !(stack.pop() == '{')) return false;
-        }
-        if(stack.size() != 0) return false;
-        return true;
+        /* TODO: implement it */
+        return false;
     }
 
     public static void main(String[] args) {

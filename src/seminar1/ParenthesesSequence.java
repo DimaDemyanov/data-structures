@@ -22,15 +22,6 @@ public class ParenthesesSequence {
     // sequence = "()()" | "((((" | ")()(" | ...
     private static boolean isBalanced(String sequence) {
         /* TODO: implement it */
-        int k = 0;
-        for (int i = 0; i < sequence.length(); i++) {
-            if (sequence.charAt(i) == '(')
-                k++;
-            if (sequence.charAt(i) == ')')
-                k--;
-            if(k < 0) return false;
-        }
-        if(k == 0) return true;
         return false;
     }
 

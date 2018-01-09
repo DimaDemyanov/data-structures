@@ -1,35 +1,28 @@
 package seminar1.collections;
 
-// DONE !!
-
 import java.util.Arrays;
 import java.util.Iterator;
 
 public class ArrayStack<Item> implements IStack<Item> {
 
     private static final int DEFAULT_CAPACITY = 10;
-    private int capacity;
+
     private Item[] elementData;
     private int size;
 
     @SuppressWarnings("unchecked")
     public ArrayStack() {
         this.elementData = (Item[]) new Object[DEFAULT_CAPACITY];
-        capacity = DEFAULT_CAPACITY;
     }
 
     @Override
     public void push(Item item) {
-        if(++size > capacity) grow();
-        elementData[size - 1] = item;
+        /* TODO: implement it */
     }
 
     @Override
     public Item pop() {
         /* TODO: implement it */
-        if(size > 0){
-            return elementData[size-- - 1];
-        }
         return null;
     }
 
@@ -44,8 +37,11 @@ public class ArrayStack<Item> implements IStack<Item> {
     }
 
     private void grow() {
-        capacity = capacity * 3 / 2;
-        elementData = Arrays.copyOf(elementData, capacity);
+        /**
+         * TODO: implement it
+         * Если массив заполнился,
+         * то увеличить его размер в полтора раз
+         */
     }
 
     private void shrink() {
@@ -54,10 +50,6 @@ public class ArrayStack<Item> implements IStack<Item> {
          * Если количество элементов в четыре раза меньше,
          * то уменьшить его размер в два раза
          */
-        if(capacity / 4 > size) {
-            capacity = capacity / 4;
-            elementData = Arrays.copyOf(elementData, capacity);
-        }
     }
 
     private void changeCapacity(int newCapacity) {
