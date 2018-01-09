@@ -1,10 +1,13 @@
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -47,6 +50,93 @@ public class TestDeque {
     public void isEmpty() {
         Assert.assertTrue(deque.isEmpty());
         Assert.assertEquals(deque.size(), 0);
+    }
+
+    @Test
+    public void testPushFront1 (){
+        int testArray[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for (int i = 0; i < testArray.length; i++) {
+            deque.pushFront(testArray[i]);
+        }
+        for (int i = 0; i < testArray.length; i++) {
+            Assert.assertTrue(deque.popBack() == testArray[i]);
+        }
+    }
+
+    @Test
+    public void testPushFront2 (){
+        int testArray[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for (int i = 0; i < testArray.length; i++) {
+            deque.pushFront(testArray[i]);
+        }
+        for (int i = testArray.length - 1; i >= 0; i--) {
+            Assert.assertTrue(deque.popFront() == testArray[i]);
+        }
+    }
+
+    @Test
+    public void testPushBack1 (){
+        int testArray[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for (int i = 0; i < testArray.length; i++) {
+            deque.pushBack(testArray[i]);
+        }
+        for (int i = 0; i < testArray.length; i++) {
+            Assert.assertTrue(deque.popFront() == testArray[i]);
+        }
+    }
+
+    @Test
+    public void testPushBack2 (){
+        int testArray[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for (int i = 0; i < testArray.length; i++) {
+            deque.pushBack(testArray[i]);
+        }
+        for (int i = testArray.length - 1; i >= 0; i--) {
+            Assert.assertTrue(deque.popBack() == testArray[i]);
+        }
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testPushNull(){
+        deque.pushBack(null);
+        deque.pushFront(null);
+        Assert.fail();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testPopBackEmpty (){
+        deque.popBack();
+        Assert.fail();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testPopFrontEmpty (){
+        deque.popFront();
+        Assert.fail();
+    }
+
+    @Test
+    public void testSize (){
+        int n = 100;
+        Assert.assertTrue(deque.size() == 0);
+        for(int i = 0; i < n; i++)
+            deque.pushBack(1);
+        Assert.assertTrue(deque.size() == n);
+    }
+
+    @Test
+    public void testIterator(){
+        int n = 100;
+        int testArray[] = new int[n];
+        for (int i = 0; i < 100; i++) {
+            testArray[i] = i;
+            deque.pushBack(testArray[i]);
+        }
+        Iterator<Integer> it = deque.iterator();
+        int i = 0;
+        while (it.hasNext()){
+            Assert.assertTrue(it.next() == testArray[i++]);
+        }
     }
 
 }

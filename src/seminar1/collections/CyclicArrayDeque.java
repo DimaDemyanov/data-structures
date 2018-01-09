@@ -1,64 +1,172 @@
 package seminar1.collections;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class CyclicArrayDeque<Item> implements IDeque<Item> {
 
+    private static final int DEFAULT_CAPACITY = 10;
+    private int capacity;
     private Item[] elementData;
+    private int size;
+    private int begin, end;
+
+    public CyclicArrayDeque() {
+        elementData = (Item [])new Object[DEFAULT_CAPACITY ];
+        capacity = DEFAULT_CAPACITY;
+        size = 0;
+        begin = 0;
+        end = DEFAULT_CAPACITY-1;
+    }
 
     @Override
     public void pushFront(Item item) {
-        /* TODO: implement it */
+        if(item == null) throw new NullPointerException();
+        begin = (begin - 1 + capacity) % capacity;
+        size++;
+        grow();
+        elementData[begin] = item;
     }
 
     @Override
     public void pushBack(Item item) {
-        /* TODO: implement it */
+        if(item == null) throw new NullPointerException();
+        end = (end + 1) % capacity;
+        size++;
+        grow();
+        elementData[end] = item;
     }
 
     @Override
     public Item popFront() {
-        /* TODO: implement it */
-        return null;
+        Item res = null;
+        if(elementData[begin] != null){
+            res = elementData[begin];
+            size--;
+            begin = (begin + 1) % capacity;
+            shrink();
+        } else {
+            throw new NoSuchElementException();
+        }
+
+        return res;
     }
 
     @Override
     public Item popBack() {
-        /* TODO: implement it */
-        return null;
+        Item res = null;
+        if(size == 0) throw new NoSuchElementException();
+        if(elementData[end] != null){
+            res = elementData[end];
+            size--;
+            end = (end - 1 + capacity) % capacity;
+            shrink();
+        } else {
+            throw new NoSuchElementException();
+        }
+
+        return res;
     }
 
     @Override
     public boolean isEmpty() {
-        /* TODO: implement it */
+        if (size == 0) return true;
         return false;
     }
 
     @Override
     public int size() {
-        /* TODO: implement it */
-        return 0;
+        return size;
     }
 
     private void grow() {
-        /**
-         * TODO: implement it
-         * Если массив заполнился,
-         * то увеличить его размер в полтора раз
-         */
+        if((end + capacity) % capacity == begin && size > 1) {
+            int newCapacity = capacity * 3 / 2;
+            Item [] newElementData = (Item[]) new Object[newCapacity];
+            for (int i = begin; i < capacity; i++) {
+                newElementData[i - begin] = elementData[i];
+            }
+            for (int i = 0; i < end; i++) {
+                newElementData[i + capacity - begin] = elementData[i];
+            }
+            elementData = newElementData;
+            end = end + capacity - begin;
+            begin = 0;
+            capacity = newCapacity;
+        }
     }
 
     private void shrink() {
-        /**
-         * TODO: implement it
-         * Если количество элементов в четыре раза меньше,
-         * то уменьшить его размер в два раза
-         */
+        if(capacity / 4 > size && size > 0) {
+            //capacity = capacity / 4;
+            if(end < begin){
+                int newCapacity = capacity / 4;
+                Item [] newElementData = (Item[]) new Object[newCapacity];
+                for (int i = begin; i < capacity; i++) {
+                    newElementData[i - begin] = elementData[i];
+                }
+                for (int i = 0; i < end; i++) {
+                    newElementData[i + capacity - begin] = elementData[i];
+                }
+                end = end + capacity - begin;
+                begin = 0;
+                capacity = newCapacity;
+            }else{
+                int newCapacity = capacity / 4;
+                Item [] newElementData = (Item[]) new Object[newCapacity];
+                for (int i = begin; i <= end ; i++) {
+                    newElementData[i - begin] = elementData[i];
+                }
+                elementData = newElementData;
+                capacity = newCapacity;
+                end = end - begin;
+                begin = 0;
+            }
+        }
     }
 
     @Override
     public Iterator<Item> iterator() {
-        /* TODO: implement it */
-        return null;
+        Iterator<Item> iter = new Iterator<Item>() {
+            int cap = capacity;
+            int s = size;
+            int curr = begin;
+            boolean hasNext = true;
+
+            @Override
+            public boolean hasNext() {
+                return size > 0 ? hasNext : false;
+            }
+
+            @Override
+            public Item next() {
+                Item res = null;
+                if(hasNext()){
+                    if(curr == end + 1 && s != 0)
+                        hasNext = false;
+                    size--;
+                    res = elementData[curr];
+                    curr = (curr + 1 + cap) % cap;
+                }
+                return res;
+            }
+        };
+        return iter;
     }
+
+    public static void main(String[] args) {
+        CyclicArrayDeque<Integer> queue = new CyclicArrayDeque<>();
+
+        for (int i = 0; i < 100; i++) {
+            queue.pushFront(i);
+        }
+        for (int i = 0; i < 15; i++) {
+            queue.popBack();
+        }
+        Iterator it = queue.iterator();
+        while (it.hasNext()){
+            System.out.println(it.next());
+        }
+    }
+
 }

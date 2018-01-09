@@ -31,7 +31,7 @@ public class IncreasingIterator implements Iterator<Integer> {
     /**
      * Конструктор итератора возвращающего возрастающую последовательность
      *
-     * @param startValue    — первое значение в итераторе.
+     * @param startValue    — первое значение в итераторе.
      *                      Должно быть неотрицательным числом.
      * @param maxValue      — максимальное значение которое может вернуть итератор.
      *                      Должно быть положительным числом большим startValue
@@ -51,7 +51,7 @@ public class IncreasingIterator implements Iterator<Integer> {
         if (stepLimit < 0) {
             throw new IllegalArgumentException("stepLimit should be greater than or equal to zero");
         }
-        if (maxStepGrowth < 0) {
+        if (maxStepGrowth <= 0) {
             throw new IllegalArgumentException("maxStepGrowth should be positive");
         }
         this.maxStepGrowth = maxStepGrowth;
